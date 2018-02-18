@@ -33,6 +33,7 @@ func (a Archivist) Describe(path string) {
 }
 
 func (a Archivist) Make(path, format string) {
+                c := Compressor{}
                 err := c.compress(format, path)
                 if err != nil {
                         fmt.Println(err)

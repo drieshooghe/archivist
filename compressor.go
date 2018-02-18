@@ -6,12 +6,12 @@ import (
     "fmt"
 )
 
-var validFormats = []string{"zip", "tar.gz"}
+var ValidFormats = []string{"zip", "tar.gz"}
 
 type Compressor struct {}
 
-func (c Compressor) isValidFormat(formatPtr string) bool {
-        return contains(validFormats, formatPtr)
+func (c Compressor) IsValidFormat(formatPtr string) bool {
+        return contains(ValidFormats, formatPtr)
 }
 
 func contains(arr []string, str string) bool {
