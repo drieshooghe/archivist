@@ -1,14 +1,14 @@
 package main
 
-var validFormats = []string{"zip"}
+import (
+    "github.com/jservice-rvbd/archiver"
+    "os"
+    "fmt"
+)
 
-type Compressor struct {
-        format string
-}
+var validFormats = []string{"zip", "tar.gz"}
 
-func (c Compressor) getFormat() string{
-        return c.format
-}
+type Compressor struct {}
 
 func (c Compressor) isValidFormat(formatPtr string) bool {
         return contains(validFormats, formatPtr)
@@ -21,4 +21,26 @@ func contains(arr []string, str string) bool {
                 }
         }
         return false
+}
+
+func (c Compressor) compress(format, path string) error {
+
+        switch format {
+
+                case "zip":
+                        err := archiver.Zip.Make(path + ".zip", []string{path})
+                        if err != nil {
+		                fmt.Println(err)
+		                os.Exit(1)
+	                }
+                case "tar.gz":
+                        err := archiver.TarGz.Make(path + ".tar.gz", []string{path})
+                        if err != nil {
+		                fmt.Println(err)
+		                os.Exit(1)
+	                }
+
+        }
+        
+        return nil
 }

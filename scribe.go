@@ -1,10 +1,9 @@
 package main
 
 import(
-      "time"
-      "os"
-      "fmt"
-//      "strconv"
+        "time"
+        "os"
+        "fmt"
 )
 
 type Describer struct {
@@ -53,46 +52,52 @@ func (d *Describer) setContent(){
 
         switch mode := d.pathInfo.Mode(); {
 
-                case mode.IsDir():
-                        listOfPaths := []DirInfo{}
-                        list(d.path, 0, &listOfPaths)
-                        fmt.Println(listOfPaths)
-                        d.content = listOfPaths
-                case mode.IsRegular():
+        case mode.IsDir():
+                listOfPaths := []DirInfo{}
+                list(d.path, 0, &listOfPaths)
+                d.content = listOfPaths
 
+        case mode.IsRegular():
+                listOfPaths := []DirInfo{}
+                d.content = append(listOfPaths, DirInfo{
+                        level: 0,
+                        name: d.pathInfo.Name(),
+                        size: d.pathInfo.Size(),
+                        isDir: false,
+                })
         }
 
 }
 
 func list(path string, level int, listOfPaths *[]DirInfo) {
-	dir, err := os.Open(path)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	defer dir.Close()
-	fi, err := dir.Readdir(-1)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	for _, fi := range fi {
-		if fi.IsDir() {
+        dir, err := os.Open(path)
+        if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+        }
+        defer dir.Close()
+        fi, err := dir.Readdir(-1)
+        if err != nil {
+                fmt.Println(err)
+                os.Exit(1)
+        }
+        for _, fi := range fi {
+                if fi.IsDir() {
 
-                       item := DirInfo{
+                        item := DirInfo{
                                 level: level,
                                 name: fi.Name(),
                                 size: fi.Size(),
                                 isDir: true,
                         }
 
-			*listOfPaths = append(*listOfPaths, item)
+                        *listOfPaths = append(*listOfPaths, item)
 
-			level++
-			list(path + "/" +  fi.Name(), level, listOfPaths)
-			level--
+                        level++
+                        list(path + "/" +  fi.Name(), level, listOfPaths)
+                        level--
 
-		} else {
+                } else {
 
                         item := DirInfo{
                                 level: level,
@@ -101,10 +106,10 @@ func list(path string, level int, listOfPaths *[]DirInfo) {
                                 isDir: false,
                         }
 
-			*listOfPaths = append(*listOfPaths, item)
+                        *listOfPaths = append(*listOfPaths, item)
 
-		}
-	}
+                }
+        }
 }
 
 type DirInfo struct{
