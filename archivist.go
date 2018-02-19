@@ -9,7 +9,7 @@ import (
 
 type Archivist struct {}
 
-func (a Archivist) Describe(path string) {
+func (a Archivist) Describe(path string) error{
                 d := Describer{}
                 d.setTitle(path)
                 d.setTimeStamp()
@@ -30,13 +30,17 @@ func (a Archivist) Describe(path string) {
                         fmt.Println(err)
 			os.Exit(1)
                 }
+
+                return nil
 }
 
-func (a Archivist) Make(path, format string) {
+func (a Archivist) Make(format, path string) error{
                 c := Compressor{}
                 err := c.compress(format, path)
                 if err != nil {
                         fmt.Println(err)
                         os.Exit(1)
                 }
+
+                return nil
 }

@@ -23,14 +23,25 @@ func main() {
         paths := flag.Args()
 
         a := archivist.Archivist{}
+        format := *formatPtr
 
         // Make description file
         for _, path := range paths {
-               a.Describe(path)
+                err := a.Describe(path)
+                if err != nil {
+                        fmt.Println(format + " is not allowed as an archiving format")
+                        os.Exit(1)
+                }
         }
+
         // Make archives
         for _, path := range paths {
-                a.Make(*formatPtr, path)
+                err := a.Make(format, path)
+                if err != nil {
+                        fmt.Println(format + " is not allowed as an archiving format")
+                        os.Exit(1)
+               }
+
         }
 
 }
