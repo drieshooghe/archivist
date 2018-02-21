@@ -15,8 +15,9 @@ func (a Archivist) Describe(path string) error{
                 d.setTimeStamp()
                 d.setPath(path)
                 d.setContent()
+                d.setTotalSize(path)
 
-                md := getMarkdown(d.path, d.timestamp, d.pathInfo.Size(), d.content)
+                md := getMarkdown(d.path, d.timestamp, d.totalsize, d.content)
 
                 f, err := os.Create(path + ".md")
                 if err != nil {

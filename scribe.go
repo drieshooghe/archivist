@@ -4,10 +4,12 @@ import(
         "time"
         "os"
         "fmt"
+        "path/filepath"
 )
 
 type Describer struct {
         title, timestamp string
+        totalsize int64
         content []DirInfo
         path string
         pathInfo os.FileInfo
@@ -19,6 +21,19 @@ func (d *Describer) setTitle(gTitle string){
 
 func (d Describer) getTitle() string{
         return d.title
+}
+
+func (d *Describer) setTotalSize(gPath string){
+        size, err := DirSize(gPath)
+        if err != nil {
+                fmt.Println(err)
+		os.Exit(1)
+        }
+        d.totalsize = size
+}
+
+func (d Describer) getTotalSize() int64{
+        return d.totalsize
 }
 
 func (d *Describer) setPath(gPath string){
@@ -117,4 +132,15 @@ type DirInfo struct{
         name string
         size int64
         isDir bool
+}
+
+func DirSize(path string) (int64, error) {
+    var size int64
+    err := filepath.Walk(path, func(_ string, info os.FileInfo, err error) error {
+        if !info.IsDir() {
+            size += info.Size()
+        }
+        return err
+    })
+    return size, err
 }
