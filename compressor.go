@@ -1,7 +1,7 @@
 package archivist
 
 import (
-        "github.com/jservice-rvbd/archiver"
+        "github.com/mholt/archiver"
         "os"
         "fmt"
 )
