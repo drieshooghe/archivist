@@ -8,7 +8,7 @@ import(
 func getMarkdown(path, timestamp, totalSize string, di []DirInfo) string{
         returnString := "# " + strings.ToUpper(path) + " # \n"
         returnString = returnString + "created: *" + timestamp  + "*"
-        returnString = returnString + "uncompressed size: *" + strconv.FormatFloat(totalSize/1.048.576, 'f', 2, 64) + "MB* \n\n"
+        returnString = returnString + "uncompressed size: *" + strconv.FormatFloat(totalSize/1048576, 'f', 2, 64) + "MB* \n\n"
 
         for _, l := range di {
                 line := strings.Repeat("     ", l.level) + " * "
@@ -17,7 +17,7 @@ func getMarkdown(path, timestamp, totalSize string, di []DirInfo) string{
                         line = line + "/"
                 }
                 line = line + "** "
-                line = line + "\t*" + strconv.FormatInt(l.size/1.048.576, 'f', 2, 64,) + "MB*"
+                line = line + "\t*" + strconv.FormatInt(l.size/1048576, 'f', 2, 64,) + "MB*"
 		returnString = returnString + line + "\n"
 	}
 
