@@ -1,47 +1,47 @@
 package archivist
 
 import (
-        "fmt"
-        "strings"
-        "os"
-        "io"
+	"fmt"
+	"io"
+	"os"
+	"strings"
 )
 
-type Archivist struct {}
+type archivist struct{}
 
-func (a Archivist) Describe(path string) error{
-                d := Describer{}
-                d.setTitle(path)
-                d.setTimeStamp()
-                d.setPath(path)
-                d.setContent()
-                d.setTotalSize(path)
+func (a archivist) describe(path string) error {
+	d := describer{}
+	d.setTitle(path)
+	d.setTimeStamp()
+	d.setPath(path)
+	d.setContent()
+	d.setTotalSize(path)
 
-                md := getMarkdown(d.path, d.timestamp, d.totalsize, d.content)
+	md := getMarkdown(d.path, d.timestamp, d.totalsize, d.content)
 
-                f, err := os.Create(path + ".md")
-                if err != nil {
-                        fmt.Println(err)
-			os.Exit(1)
-                }
-                defer f.Close()
+	f, err := os.Create(path + ".md")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer f.Close()
 
-                _, err = io.Copy(f, strings.NewReader(md))
-                if err != nil {
-                        fmt.Println(err)
-			os.Exit(1)
-                }
+	_, err = io.Copy(f, strings.NewReader(md))
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
-                return nil
+	return nil
 }
 
-func (a Archivist) Make(format, path string) error{
-                c := Compressor{}
-                err := c.compress(format, path)
-                if err != nil {
-                        fmt.Println(err)
-                        os.Exit(1)
-                }
+func (a archivist) make(format, path string) error {
+	c := compressor{}
+	err := c.compress(format, path)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
-                return nil
+	return nil
 }
